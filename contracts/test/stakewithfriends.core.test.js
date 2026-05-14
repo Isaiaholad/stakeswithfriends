@@ -1,6 +1,7 @@
 const { loadFixture, time } = require('@nomicfoundation/hardhat-toolbox/network-helpers');
 const { expect } = require('chai');
 const { ethers } = require('hardhat');
+const { deployTestStablecoin } = require('./helpers/testStablecoin');
 
 describe('StakeWithFriends core functionality', function () {
   const DECIMALS = 6;
@@ -20,7 +21,6 @@ describe('StakeWithFriends core functionality', function () {
   async function deployFixture() {
     const [admin, creator, counterparty, outsider] = await ethers.getSigners();
 
-    const MockStablecoin = await ethers.getContractFactory('MockStablecoin');
     const ProtocolControl = await ethers.getContractFactory('ProtocolControl');
     const PactVault = await ethers.getContractFactory('PactVault');
     const PactManager = await ethers.getContractFactory('PactManager');
@@ -28,13 +28,13 @@ describe('StakeWithFriends core functionality', function () {
     const PactResolutionManager = await ethers.getContractFactory('PactResolutionManager');
     const UsernameRegistry = await ethers.getContractFactory('UsernameRegistry');
 
-    const stablecoin = await MockStablecoin.deploy(
-      'Mock USDC',
-      'mUSDC',
-      DECIMALS,
-      INITIAL_SUPPLY,
-      admin.address
-    );
+    const stablecoin = await deployTestStablecoin({
+      name: 'Test USDC',
+      symbol: 'tUSDC',
+      decimals: DECIMALS,
+      initialSupply: INITIAL_SUPPLY,
+      initialHolder: admin.address
+    });
     const protocolControl = await ProtocolControl.deploy(admin.address);
     const pactVault = await PactVault.deploy(await stablecoin.getAddress(), await protocolControl.getAddress());
     const pactManager = await PactManager.deploy(

@@ -102,7 +102,7 @@ export function usePactDetailPage(id, address) {
   const readiness = useProtocolReadiness();
   const readsEnabled = configured && !invalidPactId;
   const usernameRegistryConfigured = hasUsernameRegistryConfigured();
-  const catboxUploadConfigured = true;
+  const managedUploadConfigured = true;
   const maxCommentLength = getMaxPactCommentLength();
   const now = useNow(15_000);
   const shouldAvoidChainFallback = readiness.data?.contractsConfigured === false;
@@ -744,7 +744,7 @@ export function usePactDetailPage(id, address) {
     invalidPactId,
     pactId,
     usernameRegistryConfigured,
-    catboxUploadConfigured,
+    managedUploadConfigured,
     maxCommentLength,
     now,
     pactQuery,

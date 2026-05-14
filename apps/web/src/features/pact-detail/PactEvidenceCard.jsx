@@ -26,7 +26,7 @@ const uploadStatusShell = {
 
 export default function PactEvidenceCard({
   pact,
-  catboxUploadConfigured,
+  managedUploadConfigured,
   disputeEvidenceDraft,
   setDisputeEvidenceDraft,
   pendingEvidenceFile,
@@ -92,7 +92,7 @@ export default function PactEvidenceCard({
               <Upload className="h-5 w-5 text-rose-600" />
             </div>
 
-            {catboxUploadConfigured ? (
+            {managedUploadConfigured ? (
               <>
                 <input
                   type="file"

@@ -141,7 +141,7 @@ function ChallengePageContent({ id }) {
           deadlineOutcomeWillAutoSettle={vm.deadlineOutcomeWillAutoSettle}
           singleDeclarationReviewPending={vm.singleDeclarationReviewPending}
           settlementAction={vm.settlementAction}
-          catboxUploadConfigured={vm.catboxUploadConfigured}
+          managedUploadConfigured={vm.managedUploadConfigured}
           pendingEvidenceFile={vm.pendingEvidenceFile}
           setPendingEvidenceFile={vm.setPendingEvidenceFile}
           uploadDisputeFileMutation={vm.uploadDisputeFileMutation}
@@ -152,7 +152,7 @@ function ChallengePageContent({ id }) {
 
       <PactEvidenceCard
         pact={pact}
-        catboxUploadConfigured={vm.catboxUploadConfigured}
+        managedUploadConfigured={vm.managedUploadConfigured}
         disputeEvidenceDraft={vm.disputeEvidenceDraft}
         setDisputeEvidenceDraft={vm.setDisputeEvidenceDraft}
         pendingEvidenceFile={vm.pendingEvidenceFile}

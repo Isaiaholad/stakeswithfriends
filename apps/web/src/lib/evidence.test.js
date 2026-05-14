@@ -85,12 +85,12 @@ describe('managed evidence uploads', () => {
 
     global.fetch.mockResolvedValueOnce(
       jsonResponse({
-        evidence: [{ id: 1, evidence_uri: 'https://files.catbox.moe/proof.png' }]
+        evidence: [{ id: 1, evidence_uri: 'https://rjhwefsorvhnflvwnkud.supabase.co/storage/v1/object/public/evidence/proof.webp' }]
       })
     );
 
     await expect(readPactEvidenceHistory(12, '0xabc')).resolves.toEqual([
-      { id: 1, evidence_uri: 'https://files.catbox.moe/proof.png' }
+      { id: 1, evidence_uri: 'https://rjhwefsorvhnflvwnkud.supabase.co/storage/v1/object/public/evidence/proof.webp' }
     ]);
   });
 

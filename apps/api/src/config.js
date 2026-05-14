@@ -155,7 +155,6 @@ export const apiConfig = {
   maxEvidenceImageBytes: parseInteger(getEnv('MAX_EVIDENCE_IMAGE_BYTES', 1 * 1024 * 1024), 1 * 1024 * 1024),
   maxEvidenceVideoBytes: parseInteger(getEnv('MAX_EVIDENCE_VIDEO_BYTES', 10 * 1024 * 1024), 10 * 1024 * 1024),
   storageMode: getEnv('STORAGE_MODE', 'supabase-s3'),
-  catboxPublicBaseUrl: getEnv('CATBOX_PUBLIC_BASE_URL', 'https://files.catbox.moe'),
   storageS3Endpoint: getEnv('STORAGE_S3_ENDPOINT', ''),
   storageBucket: getEnv('STORAGE_BUCKET', 'evidence'),
   storageRegion: getEnv('STORAGE_REGION', 'eu-west-1'),

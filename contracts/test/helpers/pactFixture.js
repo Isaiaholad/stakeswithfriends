@@ -1,5 +1,6 @@
 const { time } = require('@nomicfoundation/hardhat-toolbox/network-helpers');
 const { ethers } = require('hardhat');
+const { deployTestStablecoin } = require('./testStablecoin');
 
 const DECIMALS = 6;
 const EVENT_DURATION = 5 * 60;
@@ -18,7 +19,6 @@ const TWO_TOKENS = ethers.parseUnits('2', DECIMALS);
 async function deployFixture() {
   const [admin, creator, counterparty, outsider] = await ethers.getSigners();
 
-  const MockStablecoin = await ethers.getContractFactory('MockStablecoin');
   const ProtocolControl = await ethers.getContractFactory('ProtocolControl');
   const PactVault = await ethers.getContractFactory('PactVault');
   const PactManager = await ethers.getContractFactory('PactManager');
@@ -26,13 +26,13 @@ async function deployFixture() {
   const PactResolutionManager = await ethers.getContractFactory('PactResolutionManager');
   const UsernameRegistry = await ethers.getContractFactory('UsernameRegistry');
 
-  const stablecoin = await MockStablecoin.deploy(
-    'Mock USDC',
-    'mUSDC',
-    DECIMALS,
-    INITIAL_SUPPLY,
-    admin.address
-  );
+  const stablecoin = await deployTestStablecoin({
+    name: 'Test USDC',
+    symbol: 'tUSDC',
+    decimals: DECIMALS,
+    initialSupply: INITIAL_SUPPLY,
+    initialHolder: admin.address
+  });
   const protocolControl = await ProtocolControl.deploy(admin.address);
   const pactVault = await PactVault.deploy(await stablecoin.getAddress(), await protocolControl.getAddress());
   const pactManager = await PactManager.deploy(

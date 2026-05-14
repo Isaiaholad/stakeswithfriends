@@ -45,7 +45,7 @@ export default function PactActionsCard({
   deadlineOutcomeWillAutoSettle,
   singleDeclarationReviewPending,
   settlementAction,
-  catboxUploadConfigured,
+  managedUploadConfigured,
   pendingEvidenceFile,
   setPendingEvidenceFile,
   uploadDisputeFileMutation,
@@ -211,7 +211,7 @@ export default function PactActionsCard({
               </p>
             </div>
 
-            {isEfootball && catboxUploadConfigured ? (
+            {isEfootball && managedUploadConfigured ? (
               <div className="mt-4 rounded-[16px] bg-white p-3 border border-emerald-200">
                 {currentWalletMissedDeclaration && loneSubmittedDeclaration ? (
                   <div className="mb-4 rounded-[18px] border border-amber-200 bg-amber-50 p-4 text-amber-950">

@@ -32,7 +32,7 @@ describe('switchToSupportedChain', () => {
       method: 'wallet_addEthereumChain',
       params: [supportedChainParams]
     });
-    expect(supportedChainParams.rpcUrls).toEqual(expect.arrayContaining([expect.stringMatching(/^https?:\/\//)]));
+    expect(supportedChainParams.rpcUrls).toEqual(expect.arrayContaining([expect.stringMatching(/^https:\/\//)]));
   });
 
   it('keeps MetaMask 4902 behavior for wallets that use the standard unknown-chain code', async () => {

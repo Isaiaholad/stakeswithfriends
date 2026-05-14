@@ -41,7 +41,7 @@ stakewithfriends
 └── package-lock.json
 ```
 
-`MockStablecoin.sol` is kept for local contract tests. Testnet deployments should use the Arc Testnet USDC ERC-20 interface address.
+Contract tests deploy a tiny test ERC20 from the test helpers. Testnet deployments should use the Arc Testnet USDC ERC-20 interface address.
 
 ## Quick Start
 
@@ -114,7 +114,6 @@ VITE_PRIVY_APP_ID=your_privy_app_id
 ARC_RPC_UPSTREAM_URL=https://rpc.quicknode.testnet.arc.network
 VITE_API_UPSTREAM_URL=http://127.0.0.1:8787
 VITE_API_BASE_URL=
-CATBOX_UPLOAD_UPSTREAM_URL=https://catbox.moe
 ```
 
 `VITE_RPC_URL=/rpc/arc` keeps browser chain reads same-origin. `VITE_API_UPSTREAM_URL` is only used by the local Vite proxy. Leave `VITE_API_BASE_URL` empty locally to use `/api`; set it to a full API base URL such as `https://stakeswithfriends.onrender.com/api` when the browser should call the API host directly.
@@ -220,7 +219,7 @@ PRIVATE_KEY=your-deployer-private-key npm run contracts:deploy:username-registry
 - Evidence uploads go through the API, are validated, compressed with FFmpeg, and stored through Supabase Storage.
 - eFootball pacts require a final-result screenshot before result submission. The API reads common eFootball result layouts and maps the detected winner to the pact participants.
 - Chess pacts capture player color instead of an in-game username and use the normal declaration flow.
-- Legacy Catbox links may still appear in indexed evidence history, but new managed uploads should use Supabase Storage.
+- Legacy external evidence links may still appear in older indexed evidence history, but new managed uploads use Supabase Storage.
 
 ## Pact Lifecycle
 

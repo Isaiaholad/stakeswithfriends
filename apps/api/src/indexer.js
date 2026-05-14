@@ -429,7 +429,7 @@ async function applyEvidenceSubmitted(log, decoded, blockTime) {
       pactId,
       address,
       evidenceUri,
-      evidenceUri.includes('catbox') ? 'catbox-public' : 'onchain',
+      /^https?:\/\//i.test(evidenceUri) ? 'external-evidence' : 'onchain',
       log.transactionHash || '',
       blockTime.iso,
       blockTime.iso
@@ -1134,7 +1134,11 @@ async function clearIndexedRowsForSync(syncKey, { preservePactMetadata = true } 
     await run(`DELETE FROM admin_queue`);
     await run(`DELETE FROM pact_declarations`);
     await run(`DELETE FROM pact_participants`);
-    await run(preservePactMetadata ? `DELETE FROM pact_evidence WHERE source != 'catbox-metadata'` : `DELETE FROM pact_evidence`);
+    await run(
+      preservePactMetadata
+        ? `DELETE FROM pact_evidence WHERE source IN ('onchain', 'onchain-state', 'external-evidence')`
+        : `DELETE FROM pact_evidence`
+    );
     await run(`DELETE FROM pacts`);
     return;
   }

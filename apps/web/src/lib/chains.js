@@ -35,21 +35,44 @@ const chainMap = {
 
 export const supportedChain = chainMap[protocolConfig.chainId] || arcTestnet;
 
-function resolveWalletRpcUrl(chain) {
-  return (
-    import.meta.env.ARC_RPC_UPSTREAM_URL ||
-    import.meta.env.VITE_BASE_RPC_URL ||
-    (String(protocolConfig.rpcUrl || '').startsWith('http') ? protocolConfig.rpcUrl : '') ||
-    chain.rpcUrls?.default?.http?.find((rpcUrl) => String(rpcUrl).startsWith('http')) ||
-    'https://rpc.testnet.arc.network'
-  );
+function normalizeWalletRpcUrl(value) {
+  if (!value) {
+    return '';
+  }
+
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    return /^https:\/\//i.test(trimmed) ? trimmed : '';
+  }
+
+  if (typeof value === 'object' && typeof value.url === 'string') {
+    return normalizeWalletRpcUrl(value.url);
+  }
+
+  return '';
 }
+
+function resolveWalletRpcUrl(chain) {
+  const candidates = [
+    import.meta.env.VITE_WALLET_RPC_URL,
+    import.meta.env.ARC_RPC_UPSTREAM_URL,
+    import.meta.env.VITE_BASE_RPC_URL,
+    protocolConfig.rpcUrl,
+    ...(chain.rpcUrls?.default?.http || []),
+    ...(chain.rpcUrls?.public?.http || []),
+    'https://rpc.testnet.arc.network'
+  ];
+
+  return candidates.map(normalizeWalletRpcUrl).find(Boolean) || 'https://rpc.testnet.arc.network';
+}
+
+export const walletRpcUrl = resolveWalletRpcUrl(supportedChain);
 
 export const supportedChainParams = {
   chainId: `0x${supportedChain.id.toString(16)}`,
   chainName: supportedChain.name,
   nativeCurrency: supportedChain.nativeCurrency,
-  rpcUrls: [resolveWalletRpcUrl(supportedChain)],
+  rpcUrls: [walletRpcUrl],
   blockExplorerUrls: supportedChain.blockExplorers?.default?.url
     ? [supportedChain.blockExplorers.default.url]
     : []

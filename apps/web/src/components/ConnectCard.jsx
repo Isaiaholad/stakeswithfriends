@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import { LogOut, QrCode, Sparkles, Wallet } from 'lucide-react';
+import { ExternalLink, LogOut, QrCode, Sparkles, Wallet } from 'lucide-react';
 import { usePrivy } from '@privy-io/react-auth';
 import { useWalletStore } from '../store/useWalletStore.js';
+import { circleFaucetUrl } from '../lib/externalLinks.js';
 
 export default function ConnectCard({ compact = false }) {
   const { ready: privyReady, authenticated, user, login, logout } = usePrivy();
@@ -71,6 +72,17 @@ export default function ConnectCard({ compact = false }) {
           <QrCode className="h-5 w-5" />
           {isConnecting && connector === 'walletconnect' ? 'Opening WalletConnect...' : 'WalletConnect QR'}
         </button>
+        <a
+          href={circleFaucetUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={`inline-flex w-full items-center justify-center gap-2 rounded-full border px-5 py-4 text-base font-semibold ${
+            compact ? 'border-coral/25 bg-coral/10 text-coral' : 'border-sand/25 bg-sand/10 text-sand'
+          }`}
+        >
+          Get Arc Testnet USDC
+          <ExternalLink className="h-5 w-5" />
+        </a>
       </div>
 
       {!providerReady ? (

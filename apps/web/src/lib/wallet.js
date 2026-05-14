@@ -1,11 +1,7 @@
 import { createWalletClient, custom } from 'viem';
-import { supportedChain, supportedChainParams } from './chains.js';
+import { supportedChain, supportedChainParams, walletRpcUrl } from './chains.js';
 
 const walletConnectProjectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || '';
-const walletConnectRpcUrl =
-  import.meta.env.ARC_RPC_UPSTREAM_URL ||
-  import.meta.env.VITE_BASE_RPC_URL ||
-  'https://rpc.testnet.arc.network';
 
 let activeProvider = null;
 let activeConnector = null;
@@ -55,7 +51,7 @@ export async function getWalletConnectProvider() {
         chains: [supportedChain.id],
         optionalChains: [supportedChain.id],
         rpcMap: {
-          [supportedChain.id]: walletConnectRpcUrl
+          [supportedChain.id]: walletRpcUrl
         },
         showQrModal: true,
         methods: [

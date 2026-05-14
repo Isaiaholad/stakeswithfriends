@@ -21,7 +21,7 @@ process.env.CORE_SYNC_MODE = 'log-backfill';
 process.env.USERNAME_SYNC_MODE = 'log-backfill';
 process.env.PACT_INDEX_START_BLOCK = '100';
 process.env.USERNAME_INDEX_START_BLOCK = '200';
-process.env.STORAGE_MODE = 'catbox-public';
+process.env.STORAGE_MODE = 'supabase-s3';
 process.env.STABLECOIN_ADDRESS = addresses.stablecoin;
 process.env.PROTOCOL_CONTROL_ADDRESS = addresses.protocolControl;
 process.env.PACT_VAULT_ADDRESS = addresses.pactVault;
@@ -401,7 +401,7 @@ test('reorg-safe sync clears stale indexed rows and replays from the configured 
         created_at,
         updated_at
       )
-      VALUES (999, ?, 'https://files.catbox.moe/archive.png', 'catbox-metadata', ?, ?)
+      VALUES (999, ?, 'https://rjhwefsorvhnflvwnkud.supabase.co/storage/v1/object/public/evidence/archive.png', 'supabase-storage', ?, ?)
     `,
     [creator.toLowerCase(), new Date().toISOString(), new Date().toISOString()]
   );
@@ -495,8 +495,8 @@ test('reorg-safe sync clears stale indexed rows and replays from the configured 
   assert.equal(syncState.last_block_number, 101);
   assert.deepEqual(preservedMetadata, [
     {
-      evidence_uri: 'https://files.catbox.moe/archive.png',
-      source: 'catbox-metadata'
+      evidence_uri: 'https://rjhwefsorvhnflvwnkud.supabase.co/storage/v1/object/public/evidence/archive.png',
+      source: 'supabase-storage'
     }
   ]);
 });
