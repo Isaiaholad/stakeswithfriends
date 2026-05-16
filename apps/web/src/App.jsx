@@ -12,6 +12,7 @@ const PactPage = lazy(() => import('./pages/ChallengePage.jsx'));
 const ExplorePage = lazy(() => import('./pages/JoinPage.jsx'));
 const VaultPage = lazy(() => import('./pages/WalletPage.jsx'));
 const AdminPage = lazy(() => import('./pages/AdminPage.jsx'));
+const OnboardingPage = lazy(() => import('./pages/OnboardingPage.jsx'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage.jsx'));
 const cacheResetVersion = '2026-05-13-render-api-fallback-v1';
 const cacheResetStorageKey = 'stakewithfriends-cache-reset-version';
@@ -121,6 +122,7 @@ export default function App() {
             <Route path="vault" element={<VaultPage />} />
             <Route path="admin" element={<AdminPage />} />
             <Route path="connect" element={<LandingPage />} />
+            <Route path="onboarding" element={<OnboardingPage />} />
             <Route path="*" element={<NotFoundPage />} />
           </Route>
         </Routes>

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import ChallengeCard from '../components/ChallengeCard.jsx';
@@ -10,6 +11,7 @@ import StatTile from '../components/StatTile.jsx';
 import { useProtocolReadiness } from '../hooks/useProtocolReadiness.js';
 import { formatToken } from '../lib/formatters.js';
 import { isProtocolConfigured } from '../lib/contracts.js';
+import { dismissOnboarding, hasDismissedOnboarding } from '../lib/onboarding.js';
 import { readAllPacts, readVaultSnapshot } from '../lib/pacts.js';
 import { useWalletStore } from '../store/useWalletStore.js';
 
@@ -17,10 +19,51 @@ const recentDashboardPactLimit = 24;
 const liveStages = new Set(['Active', 'Declaration Open', 'Result Submitted', 'Review Period', 'Ready To Finalize', 'Needs Dispute', 'Settlement Due']);
 const historyStages = new Set(['Completed', 'Split Completed', 'Cancelled', 'Acceptance Timed Out']);
 
+function OnboardingPrompt({ onDismiss, connected = false }) {
+  return (
+    <section className="rounded-[30px] border border-coral/20 bg-white/90 p-5 shadow-glow">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-coral">New here?</p>
+          <p className="mt-2 font-display text-2xl text-ink">Learn the pact flow in 2 minutes</p>
+          <p className="mt-2 text-sm leading-6 text-slate/70">
+            See how sign-in, the USDC vault, secure competitive escrow, and AI result checks fit together before your first match.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onDismiss}
+          className="shrink-0 rounded-full bg-sand px-3 py-2 text-xs font-semibold text-slate/70"
+        >
+          Dismiss
+        </button>
+      </div>
+      <div className="mt-4 grid gap-3">
+        <Link to="/onboarding" className="rounded-full bg-coral px-4 py-3 text-center text-sm font-semibold text-white">
+          View onboarding
+        </Link>
+        <Link to={connected ? '/create' : '/explore'} className="rounded-full bg-sand px-4 py-3 text-center text-sm font-semibold text-ink">
+          {connected ? 'Create pact instead' : 'Browse open pacts'}
+        </Link>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   const address = useWalletStore((state) => state.address);
   const configured = isProtocolConfigured();
   const readiness = useProtocolReadiness();
+  const [showOnboardingPrompt, setShowOnboardingPrompt] = useState(false);
+
+  useEffect(() => {
+    setShowOnboardingPrompt(!hasDismissedOnboarding());
+  }, []);
+
+  const handleDismissOnboarding = () => {
+    dismissOnboarding();
+    setShowOnboardingPrompt(false);
+  };
 
   const pactsQuery = useQuery({
     queryKey: ['pacts', address, recentDashboardPactLimit],
@@ -60,6 +103,7 @@ export default function HomePage() {
     return (
       <div className="space-y-5">
         <ConfigBanner />
+        {showOnboardingPrompt ? <OnboardingPrompt onDismiss={handleDismissOnboarding} /> : null}
         <ConnectCard compact />
         <EmptyState
           title="Pacts start with a wallet"
@@ -92,6 +136,7 @@ export default function HomePage() {
   return (
     <div className="space-y-5">
       <ConfigBanner />
+      {showOnboardingPrompt ? <OnboardingPrompt connected onDismiss={handleDismissOnboarding} /> : null}
       <section className="grid grid-cols-2 gap-3">
         <StatTile label="Vault" value={hasVaultData ? formatToken(vault.availableBalance, vault.symbol) : '...'} />
         <StatTile label="Reserved" value={hasVaultData ? formatToken(vault.reservedBalance, vault.symbol) : '...'} accent="bg-coral text-white" />

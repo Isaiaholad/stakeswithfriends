@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Flag, Gavel, Wallet } from 'lucide-react';
+import EvidenceExamples from '../../components/EvidenceExamples.jsx';
 import { formatParticipantLabel, getDeclarationButtonShell } from './pactDetailUtils.js';
 
 const chessColors = ['White', 'Black'];
@@ -239,6 +240,12 @@ export default function PactActionsCard({
                     ? 'Disagree by uploading your final result screenshot. Images are capped at 1 MB.'
                     : 'Upload a final result screenshot. Images are capped at 1 MB.'}
                 </p>
+                <EvidenceExamples
+                  compact
+                  title="Good screenshot examples"
+                  description="Use a final-result screen where the full-time score or winner text is visible."
+                  className="mb-3 border-emerald-200"
+                />
                 <div className="flex items-center gap-2">
                   <input
                     type="file"

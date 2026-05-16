@@ -1,4 +1,5 @@
 import { ExternalLink, Gavel, RefreshCcw, Upload } from 'lucide-react';
+import EvidenceExamples from '../../components/EvidenceExamples.jsx';
 import { formatDateTime, formatRelative } from '../../lib/formatters.js';
 
 function formatBytes(sizeBytes) {
@@ -94,6 +95,12 @@ export default function PactEvidenceCard({
 
             {managedUploadConfigured ? (
               <>
+                <EvidenceExamples
+                  compact
+                  title="Good proof examples"
+                  description="Final-result screenshots make disputes easier to understand. Add video only when the screenshot is unclear."
+                  className="mt-4 border-rose-100"
+                />
                 <input
                   type="file"
                   accept="image/*,video/*"
